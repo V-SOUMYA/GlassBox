@@ -80,6 +80,24 @@ Planned improvements include:
 
 ---
 
+## Supported Model Formats
+
+GlassBox currently supports trained scikit-learn models saved as:
+
+- .joblib
+- .pkl
+- .sav
+
+If you trained your model in Jupyter or Google Colab,
+export it using:
+
+import joblib
+joblib.dump(model, "model.joblib")
+
+Then upload the model file along with your dataset CSV.
+
+---
+
 ## 🤝 Contributions
 
 Contributions, ideas, and feedback are welcome!  
