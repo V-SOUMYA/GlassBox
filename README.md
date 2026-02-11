@@ -1,110 +1,137 @@
-# 🧠 GlassBox
-**Transparent machine learning, explained.**
+# 📦 GlassBox
 
-GlassBox is a simple web app that helps you understand **what your machine learning model is doing and why**.
+> Transparent machine learning, explained.
 
-You upload a trained ML model and a dataset, and GlassBox explains:
-- which features matter the most  
-- why a specific prediction was made  
-- where bias or fairness issues might exist  
+GlassBox is a lightweight ML explainability tool that helps you understand **what your trained machine learning model is doing — and why.**
 
-The goal is to make machine learning **less of a black box** and more understandable — especially for students and beginners.
+Upload a trained scikit-learn model and a dataset, and GlassBox provides:
 
----
-
-## 🚀 Why GlassBox?
-
-Many ML models work well but are hard to explain.  
-In interviews, classes, or real-world use, people often ask:
-
-- Why did the model predict this?
-- Which features influenced the decision?
-- Is the model biased?
-
-GlassBox helps answer these questions in a clear and visual way.
+- ✅ Model validation  
+- 🔍 Global feature importance (SHAP)  
+- 🎯 Local prediction explanations  
 
 ---
 
-## ✨ What GlassBox can do
+## 🚀 Features
 
-- 📊 **Feature Importance**  
-  See which features influence the model the most.
+### 📤 Model & Dataset Upload
 
-- 🔍 **Prediction Explanation**  
-  Pick one data point and understand why the model predicted that result.
+Upload:
+- A trained scikit-learn model (`.pkl`, `.joblib`, `.sav`)
+- A dataset in CSV format
 
-- ⚖️ **Bias & Fairness Check**  
-  Compare predictions across groups (like gender or age) to spot potential bias.
+GlassBox verifies:
+- File format  
+- Model compatibility  
+- Dataset integrity  
+- Dataset size (rows & columns)  
 
-- 🧠 **Plain-English Explanations**  
-  Uses GenAI to explain results in simple language, not just charts.
+Example response:
 
----
-
-## 🛠️ How it works (high level)
-
-1. Upload a trained ML model (`.pkl` or `.joblib`)
-2. Upload the dataset used to train it (`.csv`)
-3. Select the target column
-4. (Optional) Select a sensitive attribute for bias analysis
-5. GlassBox analyzes the model and shows explanations
-
----
-
-## 🧰 Tech Stack
-
-- **Frontend:** React / Next.js  
-- **Backend:** Python + FastAPI  
-- **ML:** scikit-learn, SHAP  
-- **GenAI:** Used for human-readable explanations  
+```json
+{
+  "message": "Model and dataset uploaded successfully",
+  "rows": 100,
+  "columns": 5
+}
+```
 
 ---
 
-## 🎓 Who is this for?
+### 🔍 Global Feature Importance
 
-- Machine Learning students  
-- Beginners learning model interpretability  
-- People preparing for ML interviews  
-- Anyone curious about ethical and explainable AI  
+Understand which features influence your model most overall.
+
+GlassBox uses **SHAP (SHapley Additive exPlanations)** to compute:
+
+- Mean absolute feature impact  
+- Ranked feature importance  
+- Model-level interpretability  
+
+Example output:
+
+```json
+{
+  "feature_importance": [
+    {"feature": "hours_studied", "importance": 0.52},
+    {"feature": "attendance", "importance": 0.48}
+  ]
+}
+```
+
+This answers:
+
+> “What features matter most in this model?”
 
 ---
 
-## 📌 Current Status
+### 🎯 Local Prediction Explanation
 
-This project is under active development.  
-Planned improvements include:
-- Support for more model types  
-- PDF export of explanations  
-- Model comparison  
-- “Explain like I’m 10” mode  
+Explain a single prediction at the row level.
+
+GlassBox returns:
+
+- The model’s predicted value  
+- How each feature contributed to that prediction  
+
+Example output:
+
+```json
+{
+  "prediction": 68.0,
+  "explanation": {
+    "hours_studied": 5.2,
+    "attendance": 3.1
+  }
+}
+```
+
+This answers:
+
+> “Why did THIS specific prediction happen?”
 
 ---
 
-## Supported Model Formats
+## 🧠 Supported Model Formats
 
-GlassBox currently supports trained scikit-learn models saved as:
+GlassBox currently supports trained **scikit-learn models** saved as:
 
-- .joblib
-- .pkl
-- .sav
+- `.joblib`
+- `.pkl`
+- `.sav`
 
-If you trained your model in Jupyter or Google Colab,
-export it using:
+If you trained your model in Jupyter or Google Colab, export it using:
 
+```python
 import joblib
 joblib.dump(model, "model.joblib")
+```
 
-Then upload the model file along with your dataset CSV.
+Then upload the exported model file along with your dataset CSV.
 
 ---
 
-## 🤝 Contributions
+## ⚙️ Tech Stack
 
-Contributions, ideas, and feedback are welcome!  
-If you’re new to open source, this is a beginner-friendly project.
+- **FastAPI** — Backend framework  
+- **SHAP** — Model explainability  
+- **scikit-learn** — Supported ML framework  
+- **Python 3.9+**
+
+---
+
+## 📌 What This Project Demonstrates
+
+- Model serialization handling  
+- Explainable AI integration using SHAP  
+- Global vs Local model interpretability  
+- API design & validation  
+- Error handling  
+- Clean backend architecture  
+- Real-world ML engineering practices  
 
 ---
 
 ## 📄 License
 
-This project is open source and available under the MIT License.
+MIT License
