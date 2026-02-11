@@ -1,4 +1,4 @@
-# 📦 GlassBox
+#  GlassBox
 
 > Transparent machine learning, explained.
 
@@ -6,15 +6,15 @@ GlassBox is a lightweight ML explainability tool that helps you understand **wha
 
 Upload a trained scikit-learn model and a dataset, and GlassBox provides:
 
-- ✅ Model validation  
-- 🔍 Global feature importance (SHAP)  
-- 🎯 Local prediction explanations  
+-  Model validation  
+-  Global feature importance (SHAP)  
+-  Local prediction explanations  
 
 ---
 
-## 🚀 Features
+##  Features
 
-### 📤 Model & Dataset Upload
+###  Model & Dataset Upload
 
 Upload:
 - A trained scikit-learn model (`.pkl`, `.joblib`, `.sav`)
@@ -65,7 +65,7 @@ This answers:
 
 ---
 
-### 🎯 Local Prediction Explanation
+###  Local Prediction Explanation
 
 Explain a single prediction at the row level.
 
@@ -92,7 +92,7 @@ This answers:
 
 ---
 
-## 🧠 Supported Model Formats
+##  Supported Model Formats
 
 GlassBox currently supports trained **scikit-learn models** saved as:
 
@@ -120,7 +120,7 @@ Then upload the exported model file along with your dataset CSV.
 
 ---
 
-## 📌 What This Project Demonstrates
+##  What This Project Demonstrates
 
 - Model serialization handling  
 - Explainable AI integration using SHAP  
