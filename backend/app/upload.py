@@ -1,3 +1,4 @@
+from app.explain import analyze_bias
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from app.explain import compute_feature_importance, explain_single_prediction
 
@@ -125,6 +126,23 @@ async def local_explanation(
 
     try:
         result = explain_single_prediction(model_obj, X, row_index)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+    return result
+
+
+@router.post("/analyze/bias")
+async def bias_analysis(
+    model: UploadFile = File(...),
+    dataset: UploadFile = File(...),
+    target_column: str = "score",
+    protected_column: str = "gender"
+):
+    model_obj, df = load_model_and_data(model, dataset)
+
+    try:
+        result = analyze_bias(model_obj, df, target_column, protected_column)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
