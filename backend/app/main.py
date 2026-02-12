@@ -5,6 +5,7 @@ app = FastAPI(title="GlassBox API")
 
 app.include_router(upload_router)
 
+
 @app.get("/")
 def root():
     return {"message": "GlassBox backend is running"}

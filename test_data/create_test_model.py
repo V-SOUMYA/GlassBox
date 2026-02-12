@@ -6,7 +6,7 @@ from joblib import dump
 data = {
     "hours_studied": [1, 2, 3, 4, 5, 6],
     "attendance": [60, 65, 70, 75, 80, 85],
-    "score": [50, 55, 60, 65, 70, 75]
+    "score": [50, 55, 60, 65, 70, 75],
 }
 
 df = pd.DataFrame(data)
