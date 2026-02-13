@@ -1,4 +1,6 @@
 from app.explain import analyze_bias
+from analyzer.code_parser import analyze_code
+from analyzer.dataset_profiler import profile_dataset
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from app.explain import compute_feature_importance, explain_single_prediction
 
@@ -131,3 +133,50 @@ async def bias_analysis(
         raise HTTPException(status_code=400, detail=str(e))
 
     return result
+
+
+@router.post("/analyze/project")
+async def analyze_project(
+    code_file: UploadFile = File(...),
+    dataset: UploadFile = File(...)
+):
+    if not code_file.filename.endswith(".py"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only .py files are supported for project analysis."
+        )
+
+    if not dataset.filename.endswith(".csv"):
+        raise HTTPException(
+            status_code=400,
+            detail="Dataset must be a .csv file."
+        )
+
+    import tempfile
+    import os
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        code_path = os.path.join(temp_dir, code_file.filename)
+        data_path = os.path.join(temp_dir, dataset.filename)
+
+        with open(code_path, "wb") as f:
+            f.write(await code_file.read())
+
+        with open(data_path, "wb") as f:
+            f.write(await dataset.read())
+
+        # Read code
+        with open(code_path, "r", encoding="utf-8") as f:
+            code_string = f.read()
+
+        # Parse code
+        code_analysis = analyze_code(code_string)
+
+        # Load dataset
+        df = pd.read_csv(data_path)
+        dataset_profile = profile_dataset(df)
+
+    return {
+        "code_analysis": code_analysis,
+        "dataset_profile": dataset_profile
+    }
