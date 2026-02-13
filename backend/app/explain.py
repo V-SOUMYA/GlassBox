@@ -40,7 +40,7 @@ def explain_single_prediction(model, X: pd.DataFrame, row_index: int):
 
 
 import numpy as np
-from sklearn.metrics import confusion_matrix, mean_squared_error
+from sklearn.metrics import mean_squared_error
 
 
 def analyze_bias(model, df: pd.DataFrame, target_column: str, protected_column: str):
@@ -82,9 +82,10 @@ def analyze_bias(model, df: pd.DataFrame, target_column: str, protected_column: 
 
     fairness_metrics = {}
 
-    # Auto-detect classification
-    if len(np.unique(y)) <= 2:
-        # Binary classification
+    # Proper sklearn detection
+    model_type = getattr(model, "_estimator_type", None)
+
+    if model_type == "classifier":
         positive_rates = []
 
         for group_value, group_df in df_copy.groupby(protected_column):
@@ -98,12 +99,24 @@ def analyze_bias(model, df: pd.DataFrame, target_column: str, protected_column: 
                 if positive_rates[1] != 0 else 0
             )
         else:
-            spd = 0
-            dir_ratio = 0
+            spd = 0.0
+            dir_ratio = 0.0
 
         fairness_metrics = {
+            "model_type": "classification",
             "statistical_parity_difference": float(spd),
             "disparate_impact_ratio": float(dir_ratio)
+        }
+
+    elif model_type == "regressor":
+        fairness_metrics = {
+            "model_type": "regression",
+            "mean_prediction_disparity": float(disparity)
+        }
+
+    else:
+        fairness_metrics = {
+            "model_type": "unknown"
         }
 
     return {
