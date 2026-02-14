@@ -1,0 +1,5 @@
+{
+  "name": "GlassBox ML Explainability",
+  "description": "A clean, professional machine learning explainability dashboard for analyzing model bias, feature importance, and local explanations.",
+  "requestFramePermissions": []
+}
