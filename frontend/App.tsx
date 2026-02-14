@@ -20,36 +20,28 @@ const App: React.FC = () => {
   });
 
   const handleAnalyze = async (formData: FormData) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-    
-    try {
-      const [biasRes, importanceRes, localRes] = await Promise.all([
-        axios.post<BiasResponse>(`${API_BASE_URL}/analyze/bias`, formData),
-        axios.post<FeatureImportanceResponse>(`${API_BASE_URL}/explain/feature-importance`, formData),
-        axios.post<LocalExplanationResponse>(`${API_BASE_URL}/explain/local`, formData),
-      ]);
+  try {
+    setIsLoading(true);
 
-      setState({
-        bias: biasRes.data,
-        importance: importanceRes.data,
-        local: localRes.data,
-        loading: false,
-        error: null,
-      });
+    const response = await fetch(
+      "http://127.0.0.1:8000/analyze/project",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-      setTimeout(() => {
-        document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
+    const data = await response.json();
 
-    } catch (err: any) {
-      console.error('API Error:', err);
-      setState(prev => ({ 
-        ...prev, 
-        loading: false, 
-        error: err.response?.data?.detail || 'An unexpected error occurred. Please ensure your backend is running at http://127.0.0.1:8000' 
-      }));
-    }
-  };
+    setResult(data);
+
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen relative overflow-hidden">
