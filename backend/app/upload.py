@@ -1,6 +1,7 @@
 from app.explain import analyze_bias
 from analyzer.code_parser import analyze_code
 from analyzer.dataset_profiler import profile_dataset
+from analyzer.risk_analyzer import analyze_risks
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from app.explain import compute_feature_importance, explain_single_prediction
 
@@ -175,8 +176,12 @@ async def analyze_project(
         # Load dataset
         df = pd.read_csv(data_path)
         dataset_profile = profile_dataset(df)
+        risk_flags = analyze_risks(code_analysis, dataset_profile, df)
+
+
 
     return {
-        "code_analysis": code_analysis,
-        "dataset_profile": dataset_profile
-    }
+    "code_analysis": code_analysis,
+    "dataset_profile": dataset_profile,
+    "risk_flags": risk_flags
+}
