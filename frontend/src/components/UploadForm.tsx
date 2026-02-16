@@ -37,7 +37,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onAnalyze, isLoading }) => {
                 <input 
                   type="file" 
                   className="absolute inset-0 opacity-0 cursor-pointer" 
-                  accept=".joblib,.pkl,.sav"
+                  accept=".py"
                   onChange={(e) => setModelFile(e.target.files?.[0] || null)}
                 />
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-all duration-500 ${modelFile ? 'bg-[#543310] text-[#F8F4E1] rotate-12 scale-110' : 'bg-[#AF8F6F]/40 text-[#543310] group-hover:scale-110'}`}>
