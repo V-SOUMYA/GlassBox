@@ -19,33 +19,40 @@ const App: React.FC = () => {
   });
 
   const handleAnalyze = async (formData: FormData) => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-    
-    try {
-      const response = await axios.post<ProjectResponse>(
-        `${API_BASE_URL}/analyze/project`, 
-        formData
-      );
+  try {
+    setState(prev => ({
+      ...prev,
+      loading: true,
+      error: null,
+    }));
 
-      setState({
-        projectData: response.data,
-        loading: false,
-        error: null,
-      });
+    const response = await fetch(
+      "http://127.0.0.1:8000/analyze/project",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
-      setTimeout(() => {
-        document.getElementById('analysis-results')?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
+    const data = await response.json();
 
-    } catch (err: any) {
-      console.error('API Error:', err);
-      setState(prev => ({ 
-        ...prev, 
-        loading: false, 
-        error: err.response?.data?.detail || 'Analysis failed. Please verify the backend is running at http://127.0.0.1:8000' 
-      }));
-    }
-  };
+    setState(prev => ({
+      ...prev,
+      loading: false,
+      bias: data.bias_analysis || null,
+      importance: data.feature_importance || null,
+      local: data.local_explanation || null,
+    }));
+
+  } catch (error) {
+    setState(prev => ({
+      ...prev,
+      loading: false,
+      error: "Something went wrong while analyzing the project.",
+    }));
+  }
+};
+
 
   return (
     <div className="min-h-screen relative overflow-hidden selection:bg-[#74512D] selection:text-[#F8F4E1]">
