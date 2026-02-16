@@ -80,7 +80,7 @@ const UploadForm: React.FC<UploadFormProps> = ({ onAnalyze, isLoading }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`group relative w-full overflow-hidden rounded-3xl py-6 px-10 font-black text-xl text-[#F8F4E1] transition-all duration-500 shadow-2xl ${
+                className={`group relative w-full overflow-hidden rounded-3xl py-4 px-8 font-black text-xl text-[#F8F4E1] transition-all duration-500 shadow-2xl ${
                   isLoading 
                     ? 'bg-[#74512D] cursor-not-allowed opacity-70' 
                     : 'bg-[#543310] hover:bg-[#3d2b1f] hover:shadow-[#543310]/40 active:scale-95 border border-[#74512D]'
